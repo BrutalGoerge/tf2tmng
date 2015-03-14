@@ -339,7 +339,7 @@ public Plugin:myinfo =
 	author = "Goerge",
 	description = "Auto Managed team balancer/scrambler.",
 	version = VERSION,
-	url = "http://tf2tmng.googlecode.com/"
+	url = "https://github.com/BrutalGoerge/tf2tmng"
 };
 
 public OnPluginStart()
