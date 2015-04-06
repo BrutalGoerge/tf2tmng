@@ -1203,6 +1203,8 @@ hook()
 	HookEvent("teamplay_round_start", 		Event_RoundStart, EventHookMode_PostNoCopy);
 	HookEvent("player_disconnect", Event_PlayerDisconnect, EventHookMode_Post);
 	HookEvent("teamplay_round_win", 		Event_RoundWin, EventHookMode_Post);
+	HookEvent("teamplay_round_active",		Event_RoundActive);
+	HookEvent("teamplay_pre_round_time_left", Event_SetupActive);
 	HookEvent("teamplay_setup_finished", 	hook_Setup, EventHookMode_PostNoCopy);
 	HookEvent("player_death", 				Event_PlayerDeath_Pre, EventHookMode_Pre);
 	HookEvent("game_start", 				hook_Event_GameStart);
@@ -1262,8 +1264,20 @@ unHook()
 	UnhookEvent("teamplay_pre_round_time_left",			hookPreRound, EventHookMode_PostNoCopy);
 	UnhookEvent("teamplay_capture_blocked", Event_capture_blocked);
 	UnhookEvent("player_extinguished", Event_player_extinguished);
+	UnhookEvent("teamplay_round_active",		Event_RoundActive);
+	UnhookEvent("teamplay_pre_round_time_left", Event_SetupActive);
 
 	g_bHooked = false;
+}
+
+public Event_SetupActive(Handle event, const char[] name, bool dontBroadcast)
+{
+	g_RoundState = setup;
+}
+
+public Event_RoundActive(Handle event, const char[] name, bool dontBroadcast)
+{
+	g_RoundState = normal;
 }
 
 public Event_player_extinguished(Handle event, const char[] name, bool dontBroadcast)
