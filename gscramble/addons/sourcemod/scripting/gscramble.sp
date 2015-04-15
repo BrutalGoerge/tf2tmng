@@ -52,7 +52,7 @@ comment these 2 lines if you want to compile without them.
 #endif
 #define REQUIRE_PLUGIN
 
-#define VERSION "3.0.32"
+#define VERSION "3.0.33"
 #define TEAM_RED 2
 #define TEAM_BLUE 3
 #define SCRAMBLE_SOUND  "vo/announcer_am_teamscramble03.mp3"
@@ -782,6 +782,19 @@ public Action:Timer_load(Handle:timer)
 	g_iVotesNeeded = RoundToFloor(float(g_iVoters) * GetConVarFloat(cvar_PublicNeeded));
 }
 
+updateVoters()
+{
+	for (new i = 1; i <= MaxClients; i++)
+	{
+		if (IsClientInGame(i) && !IsFakeClient(i))
+		{
+			g_iVoters++;
+		}
+	}
+	g_iVotesNeeded = RoundToFloor(float(g_iVoters) * GetConVarFloat(cvar_PublicNeeded));
+}
+
+
 bool:IsBlocked(client)
 {
 	if (!g_bForceTeam)
@@ -1510,13 +1523,7 @@ public OnClientDisconnect(client)
 		g_aPlayers[client][bHasVoted] = false;
 	}
 	
-	g_iVoters--;	
-	if (g_iVoters < 0)
-	{
-		g_iVoters = 0;	
-	}
-	
-	g_iVotesNeeded = RoundToFloor(float(g_iVoters) * GetConVarFloat(cvar_PublicNeeded));
+	updateVoters();
 	g_aPlayers[client][iTeamPreference] = 0;
 	
 	if (GetConVarBool(cvar_AdminBlockVote) && g_aPlayers[client][bIsVoteAdmin])
@@ -1607,8 +1614,7 @@ public OnClientPostAdminCheck(client)
 	}
 	
 	g_aPlayers[client][bHasVoted] = false;
-	g_iVoters++;
-	g_iVotesNeeded = RoundToFloor(float(g_iVoters) * GetConVarFloat(cvar_PublicNeeded));
+	updateVoters();
 }
 
 #if defined HLXCE_INCLUDED
