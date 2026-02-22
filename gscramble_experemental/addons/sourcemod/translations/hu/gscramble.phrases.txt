@@ -1,0 +1,279 @@
+﻿"Phrases"
+{
+	"BlockJointeam"
+	{
+		"hu" 			"Csapatváltás blokkolva. A szerver automatikus csapatválasztást alkalmaz."
+	}
+	"VoteAd"
+	{
+		"#format"		"{1:s}"
+		"hu"			"Írd be a chaten, hogy '{1}' a keverési szavazás indításához."
+	}
+	"YourBuddyLeft"
+	{
+		"hu"			"A haverod kilépett a játékból."
+	}
+	"BuddyDisabledError"
+	{
+		"hu"			"A haver rendszer ki van kapcsolva."
+	}
+	"BuddyArgError"
+	{
+		"hu"			"Használat: sm_addbuddy <játékosnév>"
+	}
+	"SpecChangeBlock"
+	{
+		"hu"			"Nem léphetsz a nézők közé, ha ez egyensúlyhiányt okozna."
+	}
+	"AddedBuddy"
+	{
+		"#format"		"{1:s}"
+		"hu"			"{1} mostantól a haverod."
+	}
+	"SomeoneAddedYou"
+	{
+		"#format"		"{1:s}"
+		"hu"			"{1} téged választott haverjának!"
+	}
+	"ChoseANewBuddy"
+	{
+		"#format"		"{1:s}"
+		"hu"			"A régi haverod, {1}, új havert választott."
+	}
+	"AlreadyHasABuddy"
+	{
+		"hu"			"Ennek a játékosnak már van haverja."
+	}
+	"AdminBlockVoteReply"
+	{
+		"hu"			"Nem indíthatsz keverési szavazást, amíg egy admin a szerveren van."
+	}
+	"ScrambledAlready"
+	{
+		"hu"			"Már volt egy keverés ebben a körben, próbáld meg a következőben."
+	}
+	"FlagBalance"
+	{
+		"#format"		"{1:i}"
+		"hu"			"Kiegyenlítettlenség észlelve. Parancs végrehajtása {1} másodpercen belül."
+	}
+	"RestoreInnocentTeam"
+	{
+		"#format"		"{1:s}"
+		"hu"			"{1} vissza lett helyezve ebbe a csapatba. Szeretnél visszatérni a régi csapatodba, mivel nemrég lettél áthelyezve ide?"	
+	}
+	"RejoinMessage"
+	{
+		"#format" 		"{1:s}"
+		"hu"			"{1} visszatért a régi csapatba, miután egy visszacsatlakozó játékos vissza lett helyezve a sajátjába."
+	}
+	"OverrideUnCheck"
+	{
+		"hu"			"Auto-csapatkeverés visszaállítva a következő körre."
+	}
+	"OverrideCheck"
+	{
+		"hu"			"Auto-csapatkeverés blokkolva a következő körre."
+	}
+	"NowCommandReply"
+	{
+		"hu"			"Használat: sm_scramble <idő> <respawn 0/1> <mode 1-3>\nMode 1 = random\nMode 2 = pontok alapján\nMode 3 = pont+idő"
+	}
+	"AdminScrambleNow"
+	{
+		"hu"			"Csapatkeverés végrehajtva."
+	}
+	"AdminForceBalance"
+	{
+		"hu"			"Csapatkiegyenlítés kikényszerítve."		
+	}
+	"AdminResetVotes"
+	{
+		"hu"			"Nyilvános szavazások resetelve."
+	}
+	"RoundMessage"
+	{
+		"hu"			"Keverés: meghatározott körszám elérve."
+	}
+	"NoCapMessage"
+	{
+		"#format"		"{1:s}"
+		"hu"			"A(z) {1} csapat nem foglalta el a pontot az előző körben."
+	}	
+	"CancelScramble"
+	{
+		"hu"			"Folyamatban lévő keverés visszavonva."
+	}
+	"PrefAnnounce"
+	{
+		"hu"			"Írd be a chaten, hogy \"!preference <red/blu>\", hogy a plugin tudja melyik csapatot preferálod, így az autobalance magasabb prioritást ad neked!"
+	}
+	"PrefDisabled"
+	{
+		"hu"			"Ez a lehetőség most nincs használatban!"
+	}
+	"WinTime"
+	{
+		"#format"		"{1:i},{2:i}"
+		"hu"			"A győztes csapat kevesebb időn belül nyert, mint {1}p:{2}mp."
+	}
+	"FragDetection"
+	{
+		"hu"			"A győztes csapat túllépte a gyilkossági arány korlátját!"
+	}
+	"DominationMessage"
+	{
+		"hu"			"A győztes csapatban dominálási különbség észlelve."
+	}
+	"RatioMessage"
+	{
+		"hu"			"Átlagos játékos pontszám eltérése észlelve."
+	}
+	"VoteRoundTimeReply"
+	{
+		"#format"		"{1:i}"
+		"hu"			"Az utolsó keverési szavazásnak el kell indulnia a kör vége előtt {1} másodperccel."
+	}
+	"TeamRestore"
+	{
+		"hu"			"Vissza lettél helyezve a régi csapatodba, mert a csapatváltási tilalom alatt csatlakoztál újra."
+	}
+	"EnableReply"
+	{
+		"hu"			"Jelenleg nem fut a plugin."
+	}	
+	"BlockSwitchMessage"
+	{
+		"hu"			"Csapatváltás keverés vagy kiegyenlítés után tiltva."
+	}
+	"ShameMessage"
+	{
+		"#format"		"{1:s}"
+		"hu"			"{1} megpróbált csapatot váltani. Micsoda szégyen!"
+	}
+	"TeamChangedAll"
+	{
+		"#format"		"{1:s},{2:s}"
+		"hu"			"Kiegyenlítés miatt {1} áthelyezve a(z) {2} csapatba."
+	}
+	"VoteTallied"
+	{
+		"#format"		"{1:s},{2:i},{3:i}"
+		"hu"			"{1} szavazott a csapatkeverésre. {2} szavazat a szükséges {3}-ból."
+	}
+	"ScrambleRound"
+	{		
+		"hu"			"A csapatok a következő kör elején meg lesznek keverve!"
+	}
+	"VoteWillStart"
+	{
+		"hu"			"Keverési szavazás indul az aktuális szavazás után."
+	}
+	"ScrambleStartVote"
+	{
+		"hu"			"Keverés a kör végén, a szavazás eredményeként."
+	}
+	"VoteFailed"
+	{
+		"#format"		"{1:i},{2:i}"
+		"hu"			"Szavazás sikertelen: a {2} játékos {1} százaléka a keverés ellen szavazott."
+	}
+	"VoteWin"
+	{
+		"#format"		"{1:i},{2:i}"
+		"hu"			"A {2} játékos {1} százaléka szeretne keverést."
+	}
+	"NotEnoughVotes"
+	{
+		"#format"		"{1:i}"
+		"hu"			"Keverési szavazás sikertelen, kevés szavazat. Csak {1}%."
+	}
+	"MapEnding"
+	{
+		"hu"			"Folyamatban lévő keverés megszakítása a pálya vége miatt."
+	}
+	"RedStreak"
+	{
+		"hu"			"A Piros csapat elérte a nyerési maximumot, keverés indítva."
+	}
+	"BluStreak"
+	{
+		"hu"			"A Kék csapat elérte a nyerési maximumot, keverés indítva!"
+	}
+	"TeamChangedOne"
+	{
+		"hu"			"A csapatod megváltozott."
+	}
+	"PregameScrambled"
+	{
+		"hu"			"Csapatok megkeverve a játék kezdete előtt."
+	}
+	"Scrambled"
+	{
+		"hu"			"Csapatok megkeverve."
+	}
+	"ScrambleDelay"
+	{
+		"#format"		"{1:i}"
+		"hu"			"A csapatkeverés {1} másodpercen belül megtörténik!"
+	}
+	"ResetReply"
+	{
+		"#format"		"{1:i}"
+		"hu"			"Visszavonva {1} szavazat."
+	}
+	"NoScrambleReply"
+	{
+		"hu"			"Nincs mit visszavonni!"
+	}
+	"ArenaReply"
+	{
+		"hu"			"A plugin inaktív aréna módban, ha a sorbaállás be van kapcsolva."
+	}
+	"ScrambleReply"
+	{
+		"hu"			"A keverés már be lett állítva a kör végére!"
+	}
+	"NotAllowedReply"
+	{
+		"hu"			"Nem használhatod ezt a parancsot!"
+	}
+	"NoImbalnceReply"
+	{
+		"hu"			"A csapatok kiegyenlítettek."
+	}
+	"VoteDisabledReply"
+	{
+		"hu"			"Szavazás kikapcsolva."
+	}
+	"VoteDelayedReply"
+	{
+		"hu"			"A szavazás késleltetve van jelenleg!"
+	}
+	"NotEnoughPeopleVote"
+	{
+		"hu"			"Nincs elég játékos, hogy szavazni lehessen!"
+	}
+	"AlreadyVoted"
+	{
+		"hu"			"Már szavaztál!"
+	}
+	"InvalidArgs"
+	{
+		"hu"			"Hibás parancsformátum."
+	}
+	"StatsMessage"
+	{
+		"#format"		"{1:i},{2:i},{3:s}"
+		"hu"			"A keverés {1} játékost cserélt ki a {2}-ből. ({3}%)"
+	}
+	"ForceMessage"
+	{
+		"hu"			"A csapatokat most kényszerítve kiegyenlítjük. Az Adminok/VIP-ek áthelyezésre kerülhetnek, de ez nem valószínű."
+	}
+	"ImmunityDisabled"
+	{
+		"#format"		"{1:i}"
+		"hu"			"Az Admin/VIP mentelmi jog ellenőrzése ki lett kapcsolva, mert a szerveren lévő játékosok több mint {1}%-a védett."
+	}
+}

@@ -1,0 +1,279 @@
+﻿"Phrases"
+{
+	"BlockJointeam"
+	{
+		"de" 			"Teamwechsel blockiert. Dieser Server erzwingt die automatische Teamauswahl."
+	}
+	"VoteAd"
+	{
+		"#format"		"{1:s}"
+		"de"			"Schreibe '{1}' in den Chat, um eine Abstimmung zum Mischen zu starten."
+	}
+	"YourBuddyLeft"
+	{
+		"de"			"Dein Buddy hat das Spiel verlassen."
+	}
+	"BuddyDisabledError"
+	{
+		"de"			"Das Buddy-System ist deaktiviert."
+	}
+	"BuddyArgError"
+	{
+		"de"			"Verwendung: sm_addbuddy <Spielername>"
+	}
+	"SpecChangeBlock"
+	{
+		"de"			"Du kannst den Zuschauern nicht beitreten, wenn dies zu einem Ungleichgewicht führt."
+	}
+	"AddedBuddy"
+	{
+		"#format"		"{1:s}"
+		"de"			"{1} ist jetzt dein Buddy."
+	}
+	"SomeoneAddedYou"
+	{
+		"#format"		"{1:s}"
+		"de"			"{1} hat dich als Buddy ausgewählt!"
+	}
+	"ChoseANewBuddy"
+	{
+		"#format"		"{1:s}"
+		"de"			"Dein alter Buddy {1} hat einen neuen Buddy gewählt."
+	}
+	"AlreadyHasABuddy"
+	{
+		"de"			"Dieser Spieler hat bereits einen Buddy."
+	}
+	"AdminBlockVoteReply"
+	{
+		"de"			"Du kannst keine Abstimmung zum Mischen starten, solange ein Admin auf dem Server ist."
+	}
+	"ScrambledAlready"
+	{
+		"de"			"Die Teams wurden in dieser Runde bereits gemischt. Versuche es nach Rundenende erneut."
+	}
+	"FlagBalance"
+	{
+		"#format"		"{1:i}"
+		"de"			"Ungleichgewicht festgestellt. Mögliche Aktion in {1} Sekunde(n)."
+	}
+	"RestoreInnocentTeam"
+	{
+		"#format"		"{1:s}"
+		"de"			"{1} wurde in dieses Team zurückversetzt. Möchtest du in dein altes Team zurückkehren, da du vor Kurzem hierher gewechselt wurdest?"
+	}
+	"RejoinMessage"
+	{
+		"#format" 		"{1:s}"
+		"de"			"{1} hat sich entschieden, in sein altes Team zurückzukehren, nachdem ein wiederverbundener Spieler zurückgewechselt wurde."
+	}
+	"OverrideUnCheck"
+	{
+		"de"			"Automatisches Mischen für die nächste Runde entsperrt."
+	}
+	"OverrideCheck"
+	{
+		"de"			"Automatisches Mischen für die nächste Runde gesperrt."
+	}
+	"NowCommandReply"
+	{
+		"de"			"Nutzung: sm_scramble <Verzögerung> <Respawn 0/1> <Modus 1-3>\nModus 1 = Zufall\nModus 2 = Nach Punkten\nModus 3 = Nach Punkten pro Minute"
+	}
+	"AdminScrambleNow"
+	{
+		"de"			"Hat die Teams gemischt."
+	}
+	"AdminForceBalance"
+	{
+		"de"			"Hat ein Ausgleichen der Teams erzwungen."
+	}
+	"AdminResetVotes"
+	{
+		"de"			"Alle öffentlichen Abstimmungen zurückgesetzt."
+	}
+	"RoundMessage"
+	{
+		"de"			"Die Bedingungen zum Mischen der Runde sind erfüllt."
+	}
+	"NoCapMessage"
+	{
+		"#format"		"{1:s}"
+		"de"			"Team {1} hat diese Runde keinen Punkt erobert."
+	}	
+	"CancelScramble"
+	{
+		"de"			"Bevorstehendes Mischen wurde abgebrochen."
+	}
+	"PrefAnnounce"
+	{
+		"de"			"Schreibe \"!preference <red/blu>\", um dem Plugin zu sagen, welches Team du bevorzugst, damit dies beim Autobalance bevorzugt wird!"
+	}
+	"PrefDisabled"
+	{
+		"de"			"Die Bevorzugung ist deaktiviert."
+	}
+	"WinTime"
+	{
+		"#format"		"{1:i},{2:i}"
+		"de"			"Das Siegerteam gewann in weniger als {1}m:{2}s."
+	}
+	"FragDetection"
+	{
+		"de"			"Siegerteam hat das Frag-Ratio-Limit überschritten."
+	}
+	"DominationMessage"
+	{
+		"de"			"Zu hohe Differenz der Dominations beim Siegerteam festgestellt."
+	}
+	"RatioMessage"
+	{
+		"de"			"Durchschnittliche Spielerpunkte-Differenz festgestellt."
+	}
+	"VoteRoundTimeReply"
+	{
+		"#format"		"{1:i}"
+		"de"			"Die letzte Abstimmung muss stattfinden, wenn noch mehr als {1} Sekunden in dieser Runde übrig sind."
+	}
+	"TeamRestore"
+	{
+		"de"			"Dein altes Team wurde wiederhergestellt, da du während der Wechselsperre den Server verlassen und wieder betreten hast."
+	}
+	"EnableReply"
+	{
+		"de"			"Das Plugin ist derzeit über die Convar deaktiviert."
+	}	
+	"BlockSwitchMessage"
+	{
+		"de"			"Teamwechsel sind nach einem Wechsel oder Mischen vorübergehend gesperrt."
+	}
+	"ShameMessage"
+	{
+		"#format"		"{1:s}"
+		"de"			"{1} versucht, das Team zu wechseln. Was für eine Schande!"
+	}
+	"TeamChangedAll"
+	{
+		"#format"		"{1:s},{2:s}"
+		"de"			"{1} wurde zum Ausgleich ins Team {2} gewechselt."
+	}
+	"VoteTallied"
+	{
+		"#format"		"{1:s},{2:i},{3:i}"
+		"de"			"{1} hat für das Mischen der Teams gestimmt. {2} von {3} erforderlichen Stimmen."
+	}
+	"ScrambleRound"
+	{		
+		"de"			"Die Teams werden am Anfang der nächsten Runde gemischt."
+	}
+	"VoteWillStart"
+	{
+		"de"			"Die Abstimmung zum Mischen startet, nachdem die aktuelle Abstimmung beendet ist."
+	}
+	"ScrambleStartVote"
+	{
+		"de"			"Mischen zum Ende der Runde durch Abstimmung ausgelöst."
+	}
+	"VoteFailed"
+	{
+		"#format"		"{1:i},{2:i}"
+		"de"			"Abstimmung fehlgeschlagen! {1} Prozent von {2} Spielern stimmten dagegen."
+	}
+	"VoteWin"
+	{
+		"#format"		"{1:i},{2:i}"
+		"de"			"{1} Prozent von {2} Spielern stimmten für das Mischen der Teams."
+	}
+	"NotEnoughVotes"
+	{
+		"#format"		"{1:i}"
+		"de"			"Abstimmung fehlgeschlagen aufgrund unzureichender Stimmenanzahl. Nur {1}%."
+	}
+	"MapEnding"
+	{
+		"de"			"Aktives Mischen aufgrund des Map-Endes abgebrochen."
+	}
+	"RedStreak"
+	{
+		"de"			"Das RED-Team hat zu viele Runden in Folge gewonnen."
+	}
+	"BluStreak"
+	{
+		"de"			"Das BLU-Team hat zu viele Runden in Folge gewonnen."
+	}
+	"TeamChangedOne"
+	{
+		"de"			"Dein Team wurde geändert."
+	}
+	"PregameScrambled"
+	{
+		"de"			"Die Teams wurden vor der eigentlichen Runde gemischt."
+	}
+	"Scrambled"
+	{
+		"de"			"Die Teams wurden gemischt."
+	}
+	"ScrambleDelay"
+	{
+		"#format"		"{1:i}"
+		"de"			"Teams werden in {1} Sekunden gemischt."
+	}
+	"ResetReply"
+	{
+		"#format"		"{1:i}"
+		"de"			"{1} Stimmen zurückgesetzt."
+	}
+	"NoScrambleReply"
+	{
+		"de"			"Kein Mischen zum Abbrechen vorhanden."
+	}
+	"ArenaReply"
+	{
+		"de"			"Das Plugin ist im Arena-Modus mit aktivierter Warteschlange deaktiviert."
+	}
+	"ScrambleReply"
+	{
+		"de"			"Die Teams werden am Ende der Runde bereits gemischt."
+	}
+	"NotAllowedReply"
+	{
+		"de"			"Du bist nicht berechtigt, diesen Befehl auszuführen."
+	}
+	"NoImbalnceReply"
+	{
+		"de"			"Kein Ungleichgewicht festgestellt."
+	}
+	"VoteDisabledReply"
+	{
+		"de"			"Die Abstimmung wurde deaktiviert."
+	}
+	"VoteDelayedReply"
+	{
+		"de"			"Die Abstimmung ist momentan verzögert."
+	}
+	"NotEnoughPeopleVote"
+	{
+		"de"			"Nicht genügend Spieler, um eine Abstimmung zu starten."
+	}
+	"AlreadyVoted"
+	{
+		"de"			"Du hast bereits abgestimmt."
+	}
+	"InvalidArgs"
+	{
+		"de"			"Ungültiger Parameter."
+	}
+	"StatsMessage"
+	{
+		"#format"		"{1:i},{2:i},{3:s}"
+		"de"			"Mischen tauschte {1} von {2} Spielern aus. ({3}%)"
+	}
+	"ForceMessage"
+	{
+		"de"			"Die Teams werden nun zwangsweise ausgeglichen. Admins/VIPs können verschoben werden, aber das ist unwahrscheinlich."
+	}
+	"ImmunityDisabled"
+	{
+		"#format"		"{1:i}"
+		"de"			"Die Admin/VIP-Immunitätsprüfung wurde deaktiviert, da über {1}% des Servers als immun markiert sind."
+	}
+}

@@ -1,0 +1,279 @@
+﻿"Phrases"
+{
+	"BlockJointeam"
+	{
+		"da" 			"Holdskift blokeret. Denne server håndhæver automatisk holdvalg."
+	}
+	"VoteAd"
+	{
+		"#format"		"{1:s}"
+		"da"			"Skriv '{1}' for at starte en afstemning om at blande holdene."
+	}
+	"YourBuddyLeft"
+	{
+		"da"			"Din makker har forladt spillet."
+	}
+	"BuddyDisabledError"
+	{
+		"da"			"Makkersystemet er deaktiveret."
+	}
+	"BuddyArgError"
+	{
+		"da"			"Brug: sm_addbuddy <makker>"
+	}
+	"SpecChangeBlock"
+	{
+		"da"			"Du kan ikke blive tilskuer, hvis det vil forårsage en ubalance."
+	}
+	"AddedBuddy"
+	{
+		"#format"		"{1:s}"
+		"da"			"{1} er nu din makker."
+	}
+	"SomeoneAddedYou"
+	{
+		"#format"		"{1:s}"
+		"da"			"{1} har valgt dig som sin makker!"
+	}
+	"ChoseANewBuddy"
+	{
+		"#format"		"{1:s}"
+		"da"			"Din gamle makker {1} har valgt en ny makker."
+	}
+	"AlreadyHasABuddy"
+	{
+		"da"		"Denne spiller har allerede en makker."
+	}
+	"AdminBlockVoteReply"
+	{
+		"da"		"Du kan ikke starte en afstemning om at blande holdene, mens en admin er forbundet."
+	}
+	"ScrambledAlready"
+	{
+		"da"		"Holdene er allerede blevet blandet i denne runde. Prøv igen når denne runde ender."
+	}
+	"FlagBalance"
+	{
+		"#format"		"{1:i}"
+		"da"			"Ubalance fundet. Mulig handling vil begynde om {1} sekund(er)."
+	}
+	"RestoreInnocentTeam"
+	{
+		"#format"	"{1:s}"
+		"da"		"{1} er blevet tvunget tilbage på dette hold, vil du gerne slutte dig til det andet hold, siden du for nylig blev balanceret til dette hold?"	
+	}
+	"RejoinMessage"
+	{
+		"#format" 	"{1:s}"
+		"da"		"{1} har valgt at slutte sig til sit gamle hold, efter en genforbindende spiller blev tvunget på sit hold."
+	}
+	"OverrideUnCheck"
+	{
+		"da"		"Fjernede blokkering for auto-bland check for næste runde."
+	}
+	"OverrideCheck"
+	{
+		"da"		"Blokkerede auto-bland check for næste runde."
+	}
+	"NowCommandReply"
+	{
+		"da"		"Brug: sm_scramble <forsinkelse> <respawn 0/1> <mode 1-3>\nMode 1 = tilfældig\nMode 2 = score sortering\nMode 3 = score sortering per minut"
+	}
+	"AdminScrambleNow"
+	{
+		"da"		"Blandede holdene."
+	}
+	"AdminForceBalance"
+	{
+		"da"		"Tvang balance i holdene."
+	}
+	"AdminResetVotes"
+	{
+		"da"		"Nulstil alle offentlige stemme udløsere."
+	}
+	"RoundMessage"
+	{
+		"da"		"Bland runde udløser er nået."
+	}
+	"NoCapMessage"
+	{
+		"#format"	"{1:s}"
+		"da"		"{1} fik ingen point i sidste runde."
+	}	
+	"CancelScramble"
+	{
+		"da"		"Afbrød den ventende blanding."
+	}
+	"PrefAnnounce"
+	{
+		"da"		"Sig \"!preference <red/blu>\" for at lade modulet vide hvilket hold du foretrækker, så autobalance vil give dig højere prioritet!"
+	}
+	"PrefDisabled"
+	{
+		"da"		"Præference systemet er deaktiveret."
+	}
+	"WinTime"
+	{
+		"#format"	"{1:i},{2:i}"
+		"da"		"Det vindene hold vandt på mindre end {1}m:{2}s."
+	}
+	"FragDetection"
+	{
+		"da"		"Vindene hold frag rate begrænsning overskredet."
+	}
+	"DominationMessage"
+	{
+		"da"		"Vinder hold spiller-dominerings-difference fundet."
+	}
+	"RatioMessage"
+	{
+		"da"		"Gennemsnitlig spiller score forskel fundet."
+	}
+	"VoteRoundTimeReply"
+	{
+		"#format"	"{1:i}"
+		"da"		"Den sidste afstemning om at blande holdene skal ske når der er mere end {1} sekunder tilbage af runden."
+	}
+	"TeamRestore"
+	{
+		"da"		"Du er blevet placeret på det hold du var på før du forlod serveren, mens det ikke var tilladt at skifte."
+	}
+	"EnableReply"
+	{
+		"da"		"Modulet er i øjeblikket deaktiveret via cvar."
+	}	
+	"BlockSwitchMessage"
+	{
+		"da"		"Der kan ikke skiftes hold efter de er blevet blandet."
+	}
+	"ShameMessage"
+	{
+		"#format"	"{1:s}"
+		"da"		"{1} forsøger at skifte hold. Hvilken skam!"
+	}
+	"TeamChangedAll"
+	{
+		"#format"	"{1:s},{2:s}"
+		"da"		"{1} er blevet flyttet til {2} for at balancere holdene."
+	}
+	"VoteTallied"
+	{
+		"#format"	"{1:s},{2:i},{3:i}"
+		"da"		"{1} stemmer for at blande holdene. {2} stemmer ud af {3} påkrævet."
+	}
+	"ScrambleRound"
+	{		
+		"da"		"Holdene vil blivet blandet ved slutningen af runden."
+	}
+	"VoteWillStart"
+	{
+		"da"		"Afstemningen om at blande holdene vil starte efter den nuværende afstemning slutter."
+	}
+	"ScrambleStartVote"
+	{
+		"da"		"Holdene blandes ved rundens slutning som følge af afstemningen."
+	}
+	"VoteFailed"
+	{
+		"#format"	"{1:i},{2:i}"
+		"da"		"Afstemningen slog fejl: {1} procent af {2} spillere stemte imod at blande holdene."
+	}
+	"VoteWin"
+	{
+		"#format"	"{1:i},{2:i}"
+		"da"		"{1} procent af {2} spillere stemte om af få holdene blandet."
+	}
+	"NotEnoughVotes"
+	{
+		"#format"	"{1:i}"
+		"da"		"Afstemningen om at blande holdene har slået fejl pga. utilstrækkelige stemmer. Kun {1} procent stemte."
+	}
+	"MapEnding"
+	{
+		"da"		"Holdene blandes ikke fordi banen skiftes."
+	}
+	"RedStreak"
+	{
+		"da"		"Det røde hold har vundet runder nok til at holdene blandes."
+	}	
+	"BluStreak"
+	{
+		"da"		"Det blå hold har vundet runder nok til at holdene blandes."
+	}
+	"TeamChangedOne"
+	{
+		"da"		"Dit hold er blevet ændret."
+	}
+	"PregameScrambled"
+	{
+		"da"		"Holdene er blevet blandet fordi spillet starter."
+	}
+	"Scrambled"
+	{
+		"da"		"Holdene er blevet blandet."
+	}
+	"ScrambleDelay"
+	{
+		"#format"	"{1:i}"
+		"da"		"Holdene blandes om {1} sekunder."
+	}
+	"ResetReply"
+	{
+		"#format"	"{1:i}"
+		"da"		"Nulstil {1} stemmer."
+	}
+	"NoScrambleReply"
+	{
+		"da"		"Ingen blanding at annullere."
+	}
+	"ArenaReply"
+	{
+		"da"		"Modulet er deaktiveret på arena baner hvor kø er slået til."
+	}
+	"ScrambleReply"
+	{
+		"da"		"En blanding er allerede planlagt til slutningen af denne runde."
+	}
+	"NotAllowedReply"
+	{
+		"da"		"Du har ikke tilladelse til at køre denne kommando."
+	}
+	"NoImbalnceReply"
+	{
+		"da"		"Ingen ubalance fundet."
+	}
+	"VoteDisabledReply"
+	{
+		"da"		"Afstemning er deaktiveret."
+	}
+	"VoteDelayedReply"
+	{
+		"da"		"Afstemning om at blande holdene er i øjeblikket forsinket."
+	}
+	"NotEnoughPeopleVote"
+	{
+		"da"		"Ikke nok spillere til at starte en afstemning."
+	}
+	"AlreadyVoted"
+	{
+		"da"		"Du har allerede stemt."
+	}
+	"InvalidArgs"
+	{
+		"da"		"Ugyldigt kommando argument."
+	}
+	"StatsMessage"
+	{
+		"#format"	"{1:i},{2:i},{3:s}"
+		"da"		"Blanding byttede om på {1} ud af {2} spillere. {3}%"
+	}
+	"ForceMessage"
+	{
+		"da"		"Holdene bliver nu tvangsbalanceret. Admins/Donatorer kan blive skiftet, men det er usandsynligt."
+	}
+	"ImmunityDisabled"
+	{
+		"#format"	"{1:i}"
+		"da"		"Admin/Donator-tjek er nu deaktiveret, fordi over %{1} af serveren er sat til at være immun."
+	}
+}
