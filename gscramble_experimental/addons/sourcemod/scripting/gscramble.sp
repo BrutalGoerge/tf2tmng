@@ -29,7 +29,7 @@ Description:
 #define EVEN_SOUND		"vo/announcer_am_teamscramble01.mp3"
 
 // --- Global ConVars ---
-ConVar cvar_Version, cvar_Volunteer, cvar_VolunteerTime, cvar_Steamroll, cvar_Needed, cvar_Delay, cvar_MinPlayers, cvar_MinAutoPlayers,
+ConVar cvar_Version, cvar_Steamroll, cvar_Needed, cvar_Delay, cvar_MinPlayers, cvar_MinAutoPlayers,
 	cvar_FragRatio, cvar_AutoScramble, cvar_VoteEnable, cvar_WaitScramble, cvar_ForceTeam, cvar_ForceBalance,
 	cvar_SteamrollRatio, cvar_VoteMode, cvar_PublicNeeded, cvar_FullRoundOnly, cvar_AutoScrambleWinStreak,
 	cvar_SortMode, cvar_TeamSwapBlockImmunity, cvar_MenuVoteEnd, cvar_AutoscrambleVote, cvar_ScrambleImmuneMode,
@@ -45,7 +45,7 @@ ConVar cvar_Version, cvar_Volunteer, cvar_VolunteerTime, cvar_Steamroll, cvar_Ne
 	cvar_ScrambleCheckImmune, cvar_BalanceImmunityCheck, cvar_OneScramblePerRound, cvar_ProgressDisable,
 	cvar_AutoTeamBalance, cvar_TeamWorkFlagEvent, cvar_TeamWorkUber, cvar_TeamWorkMedicKill,
 	cvar_TeamWorkCpTouch, cvar_TeamWorkCpCapture, cvar_TeamWorkPlaceSapper, cvar_TeamWorkBuildingKill,
-	cvar_TeamWorkCpBlock, cvar_TeamWorkExtinguish;
+	cvar_TeamWorkCpBlock, cvar_TeamWorkExtinguish, cvar_Volunteer, cvar_VolunteerTime, cvar_AutoScrambleEveryRound;
 
 // --- Global Objects ---
 TopMenu g_hAdminMenu;
@@ -96,7 +96,6 @@ enum e_PlayerInfo
 	iDeaths,
 	bHasFlag,
 	iSpecChangeTime
-	// GameMe and HlxCe logic removed
 };
 
 enum e_RoundState
@@ -158,7 +157,7 @@ enum eTeamworkReasons
 e_RoundState g_RoundState;
 ScrambleTime g_iDefMode;
 
-// Defined as any to safely support the struct-like mixing of ints and booleans
+// Defined as 'any' to safely support the struct-like mixing of ints and booleans
 any g_aTeams[e_TeamInfo];
 any g_aPlayers[MAXPLAYERS + 1][e_PlayerInfo];
 
@@ -211,6 +210,8 @@ public void OnPluginStart()
 	cvar_TeamWorkExtinguish	= CreateConVar("gs_ab_teamwork_extinguish",		"30", "Time immunity from auto-balance to grant when a player extinguishes a team-mate.",		0, true, 0.0, false);
 	cvar_ImbalancePrevent	= CreateConVar("gs_prevent_spec_imbalance", "0", "If set, block changes to spectate that result in a team imbalance", 0, true, 0.0, true, 1.0);
 	cvar_BuddySystem		= CreateConVar("gs_use_buddy_system", "0", "Allow players to choose buddies to try to keep them on the same team", 0, true, 0.0, true, 1.0);
+	cvar_Volunteer			= CreateConVar("gs_ab_volunteer", "0", "Ask players of the larger team to volunteer to swap over.", 0, true, 0.0, true, 1.0);
+	cvar_VolunteerTime		= CreateConVar("gs_ab_volunteer_time", "15", "Time in seconds the volunteer menu stays on screen.", 0, true, 10.0, true, 90.0);
 	cvar_SelectSpectators = CreateConVar("gs_Select_spectators", "60", "During a scramble or force-balance, select spectators who have change to spectator in less time in seconds than this setting, 0 disables", 0, true, 0.0, false);
 	cvar_TeamworkProtect	= CreateConVar("gs_teamwork_protect", "1",		"Enable/disable the teamwork protection feature.", 0, true, 0.0, true, 1.0);
 	cvar_ForceBalance 		= CreateConVar("gs_force_balance",	"0", 		"Force a balance between each round.", 0, true, 0.0, true, 1.0);
@@ -263,8 +264,7 @@ public void OnPluginStart()
 	cvar_MenuIntegrate 		= CreateConVar("gs_admin_menu",			"1",  "Enable or disable the automatic integration into the admin menu", 0, true, 0.0, true, 1.0);
 	cvar_BlockJointeam 		= CreateConVar("gs_block_jointeam",		"0", "If enabled, will block the use of the jointeam and spectate commands and force mp_forceautoteam enabled if it is not enabled", 0, true, 0.0, true, 1.0);
 	cvar_OneScramblePerRound= CreateConVar("gs_onescrambleperround", "1", "If enabled, will only allow only allow one scramble per round", 0, true, 0.0, true, 1.0);
-	cvar_Volunteer 			= CreateConVar("gs_ab_volunteer", "0", "Ask players of the larger team to volunteer to swap over.", 0, true, 0.0, true, 1.0);
-	cvar_VolunteerTime 		= CreateConVar("gs_ab_volunteer_time", "15", "Time in seconds the volunteer menu stays on screen.", 0, true, 10.0, true, 90.0);
+	cvar_AutoScrambleEveryRound = CreateConVar("gs_as_every_round", "0", "Force auto-scramble at the end of rounds. 0 = disabled, 1 = every round, 2 = every full round.", 0, true, 0.0, true, 2.0);
 	cvar_Version			= CreateConVar("gscramble_version", VERSION, "Gscramble version", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 
 	RegCommands();
@@ -332,14 +332,22 @@ void RegCommands()
 	RegConsoleCmd("sm_addbuddy",   cmd_AddBuddy);
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// CMD_Listener (jointeam / spectate)
+// Description: Intercepts client commands for switching teams or joining spectator.
+// Used to enforce the gs_changeblocktime (preventing players from dodging a scramble) 
+// and gs_prevent_spec_imbalance (preventing players from ruining team balance by joining spec).
+// -------------------------------------------------------------------------------------------------------------------------
 public Action CMD_Listener(int client, const char[] command, int argc)
 {
 	if (StrEqual(command, "jointeam", false) || StrEqual(command, "spectate", false))
 	{
 		if (client && !IsFakeClient(client))
 		{	
+			// If full team switching blocks are active
 			if (g_bBlockJointeam)
 			{
+				// Check for admin override rights
 				if (cvar_TeamSwapBlockImmunity.BoolValue)
 				{				
 					char flags[32];
@@ -350,10 +358,14 @@ public Action CMD_Listener(int client, const char[] command, int argc)
 						return Plugin_Continue;
 					}
 				}
+				
+				// Allow switching strictly to fix an existing imbalance
 				if (TeamsUnbalanced(false)) 
 				{
 					return Plugin_Continue;
 				}
+				
+				// Block normal switches to Red/Blu
 				if (GetClientTeam(client) >= 2)
 				{
 					PrintToChat(client, "\x01\x04[SM]\x01 %t", "BlockJointeam");
@@ -361,6 +373,7 @@ public Action CMD_Listener(int client, const char[] command, int argc)
 					return Plugin_Handled;				
 				}			
 			}
+			
 			if (IsValidTeam(client))
 			{
 				char sArg[9];
@@ -368,6 +381,8 @@ public Action CMD_Listener(int client, const char[] command, int argc)
 				{
 					GetCmdArgString(sArg, sizeof(sArg));
 				}
+				
+				// Verify if the player is just trying to fix an unbalanced server
 				if (StrEqual(sArg, "blue", false) || StrEqual(sArg, "red", false) || StringToInt(sArg) >= 2)
 				{
 					if (TeamsUnbalanced(false)) 
@@ -375,16 +390,20 @@ public Action CMD_Listener(int client, const char[] command, int argc)
 						return Plugin_Continue;
 					}
 				}
+				
+				// Check if the player is serving a block penalty from a recent scramble/balance
 				if (IsBlocked(client))
 				{
 					HandleStacker(client);
 					return Plugin_Handled;
 				}
 				
+				// Prevent spec-dodging if it creates an imbalance
 				if (StrEqual(command, "spectate", false) || StringToInt(sArg) < 2 || StrContains(sArg, "spec", false) != -1)
 				{
 					if (cvar_ImbalancePrevent.BoolValue)
 					{
+						// Simulates the team sizes if the player left. Blocks if the difference is too high.
 						if (CheckSpecChange(client) || IsBlocked(client))
 						{
 							HandleStacker(client);
@@ -398,6 +417,7 @@ public Action CMD_Listener(int client, const char[] command, int argc)
 					}
 					else if (g_bSelectSpectators)
 					{
+						// Track exactly when they joined spec so they can be prioritized for force-balance
 						g_aPlayers[client][iSpecChangeTime] = GetTime();
 					}
 				}
@@ -407,6 +427,12 @@ public Action CMD_Listener(int client, const char[] command, int argc)
 	return Plugin_Continue;
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// CheckExtensions
+// Description: Verifies the game is TF2 and prepares the ClientPrefs extension. 
+// ClientPrefs handles "cookies" used to permanently tag players who disconnect 
+// to avoid an autobalance, allowing the plugin to force them back to their old team upon returning.
+// -------------------------------------------------------------------------------------------------------------------------
 void CheckExtensions()
 {
 	char sMod[14];
@@ -441,6 +467,7 @@ void CheckExtensions()
 		}
 	}	
 	
+	// Register the tracking cookies
 	if (g_bUseClientPrefs)
 	{
 		g_cookie_timeBlocked = new Cookie("time blocked", "time player was blocked", CookieAccess_Private);
@@ -554,6 +581,11 @@ public void OnPluginEnd()
 	}
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// AskPluginLoad2 & Timer_load
+// Description: Prepares the plugin if it was reloaded dynamically mid-game by a server admin.
+// Rebuilds the voter pool and natively registers functions for external use.
+// -------------------------------------------------------------------------------------------------------------------------
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
 	if (late)
@@ -574,7 +606,16 @@ public Action Timer_load(Handle timer)
 {
 	g_RoundState = roundNormal;
 	CreateTimer(1.0, Timer_GetTime);
-	updateVoters();
+	
+	// Manually construct the total voter pool if loaded late
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (IsClientInGame(i) && !IsFakeClient(i))
+		{
+			g_iVoters++;
+		}
+	}
+	g_iVotesNeeded = RoundToFloor(float(g_iVoters) * cvar_PublicNeeded.FloatValue);
 	return Plugin_Handled;
 }
 
@@ -591,32 +632,54 @@ void updateVoters()
 	g_iVotesNeeded = RoundToFloor(float(g_iVoters) * cvar_PublicNeeded.FloatValue);
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// IsBlocked & HandleStacker
+// Description: Determines if a client is currently restricted from swapping teams
+// based on active scrambles, or active post-scramble cooldowns. HandleStacker applies warnings
+// and potentially punishes players actively trying to bypass the lock to stack a team.
+// -------------------------------------------------------------------------------------------------------------------------
 bool IsBlocked(int client)
 {
-	if (!g_bForceTeam)
-	{
-		return false;
-	}
+	if (!g_bForceTeam) return false;
 	
 	if (g_bTeamsLocked)
 	{
 		char flags[32];
 		cvar_TeamswapAdmFlags.GetString(flags, sizeof(flags));
 		
-		if (IsAdmin(client, flags))
-		{
-			return false;
-		}
+		if (IsAdmin(client, flags)) return false;
 		
 		return true;
 	}
 	
-	if (g_aPlayers[client][iBlockTime] > GetTime())
-	{
-		return true;
-	}
+	if (g_aPlayers[client][iBlockTime] > GetTime()) return true;
 	
 	return false;
+}
+
+void HandleStacker(int client)
+{
+	// Give them two grace warnings before fully locking them down
+	if (g_aPlayers[client][iBlockWarnings] < 2) 
+	{
+		char clientName[MAX_NAME_LENGTH + 1];
+		GetClientName(client, clientName, 32);
+		LogAction(client, -1, "\"%L\" was blocked from changing teams", client);
+		ReplyToCommand(client, "\x01\x04[SM]\x01 %t", "BlockSwitchMessage");
+		
+		if (!g_bSilent)
+		{
+			PrintToChatAll("\x01\x04[SM]\x01 %t", "ShameMessage", clientName);
+		}
+		
+		g_aPlayers[client][iBlockWarnings]++;
+	}	
+	
+	// Add punishment time onto their block timer if configured
+	if (cvar_Punish.BoolValue)	
+	{
+		SetupTeamSwapBlock(client);
+	}
 }
 
 public int Native_GS_IsBlocked(Handle plugin, int numParams)
@@ -976,6 +1039,12 @@ public void Event_RoundActive(Event event, const char[] name, bool dontBroadcast
 	g_RoundState = roundNormal;
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// Teamwork Interaction Hooks
+// Description: The following functions handle objective play. When a player actively contributes 
+// to the map objective (capping points, sapping, dropping ubers, healing), they are granted 
+// temporary immunity from autobalance via the AddTeamworkTime function.
+// -------------------------------------------------------------------------------------------------------------------------
 public void Event_player_extinguished(Event event, const char[] name, bool dontBroadcast)
 {
 	int healer = GetClientOfUserId(event.GetInt("healer"));
@@ -1138,6 +1207,12 @@ public void OnClientDisconnect(int client)
 	}
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// Event_PlayerDisconnect & OnClientCookiesCached
+// Description: Core of the anti-dodge system. If a player is locked on a team (due to a recent autobalance or scramble)
+// and disconnects, their steamid, ip, and current team are stored. If they return within the block time, 
+// they are forced right back onto the team they tried to escape from.
+// -------------------------------------------------------------------------------------------------------------------------
 public Action Event_PlayerDisconnect(Event event, const char[] name, bool dontBroadcast)
 {
 	CheckBalance(true);
@@ -1288,6 +1363,28 @@ public Action timer_Restore(Handle timer, any id)
 	return Plugin_Handled;	
 }
 
+void AddTeamworkTime(int client, eTeamworkReasons reason)
+{
+	if (!cvar_TeamworkProtect.BoolValue) return;
+	if (g_RoundState == roundNormal && client && IsClientInGame(client) && !IsFakeClient(client))
+	{
+		int iTime;
+		switch (reason)
+		{
+			case flagEvent: iTime = cvar_TeamWorkFlagEvent.IntValue;
+			case medicKill: iTime = cvar_TeamWorkMedicKill.IntValue;
+			case medicDeploy: iTime = cvar_TeamWorkUber.IntValue;
+			case buildingKill: iTime = cvar_TeamWorkBuildingKill.IntValue;
+			case placeSapper: iTime = cvar_TeamWorkPlaceSapper.IntValue;
+			case controlPointCaptured: iTime = cvar_TeamWorkCpCapture.IntValue;
+			case controlPointTouch: iTime = cvar_TeamWorkCpTouch.IntValue;
+			case controlPointBlock: iTime = cvar_TeamWorkCpBlock.IntValue;
+			case playerExtinguish: iTime = cvar_TeamWorkExtinguish.IntValue;
+		}
+		g_aPlayers[client][iTeamworkTime] = GetTime()+iTime;
+	}
+}
+
 public void OnMapStart()
 {
 	g_iMapStartTime = GetTime();
@@ -1330,28 +1427,6 @@ public void OnMapStart()
 	g_iLastRoundWinningTeam = 0;
 }
 
-void AddTeamworkTime(int client, eTeamworkReasons reason)
-{
-	if (!cvar_TeamworkProtect.BoolValue) return;
-	if (g_RoundState == roundNormal && client && IsClientInGame(client) && !IsFakeClient(client))
-	{
-		int iTime;
-		switch (reason)
-		{
-			case flagEvent: iTime = cvar_TeamWorkFlagEvent.IntValue;
-			case medicKill: iTime = cvar_TeamWorkMedicKill.IntValue;
-			case medicDeploy: iTime = cvar_TeamWorkUber.IntValue;
-			case buildingKill: iTime = cvar_TeamWorkBuildingKill.IntValue;
-			case placeSapper: iTime = cvar_TeamWorkPlaceSapper.IntValue;
-			case controlPointCaptured: iTime = cvar_TeamWorkCpCapture.IntValue;
-			case controlPointTouch: iTime = cvar_TeamWorkCpTouch.IntValue;
-			case controlPointBlock: iTime = cvar_TeamWorkCpBlock.IntValue;
-			case playerExtinguish: iTime = cvar_TeamWorkExtinguish.IntValue;
-		}
-		g_aPlayers[client][iTeamworkTime] = GetTime()+iTime;
-	}
-}
-
 public void OnMapEnd()
 {
 	if (g_hScrambleDelay != null) KillTimer(g_hScrambleDelay);		
@@ -1382,29 +1457,6 @@ void PerformVoteReset(int client)
 		g_aPlayers[i][bHasVoted] = false;
 	}
 	g_iVotes = 0;
-}
-
-void HandleStacker(int client)
-{
-	if (g_aPlayers[client][iBlockWarnings] < 2) 
-	{
-		char clientName[MAX_NAME_LENGTH + 1];
-		GetClientName(client, clientName, 32);
-		LogAction(client, -1, "\"%L\" was blocked from changing teams", client);
-		ReplyToCommand(client, "\x01\x04[SM]\x01 %t", "BlockSwitchMessage");
-		
-		if (!g_bSilent)
-		{
-			PrintToChatAll("\x01\x04[SM]\x01 %t", "ShameMessage", clientName);
-		}
-		
-		g_aPlayers[client][iBlockWarnings]++;
-	}	
-	
-	if (cvar_Punish.BoolValue)	
-	{
-		SetupTeamSwapBlock(client);
-	}
 }
 
 public Action cmd_Balance(int client, int args) 
@@ -1539,6 +1591,12 @@ stock void PerformScrambleNow(int client, float fDelay = 5.0, bool respawn = fal
 	StartScrambleDelay(fDelay, respawn, mode);
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// AttemptScrambleVote
+// Description: Validates and processes a chat trigger (e.g., !scramble). Calculates if the required
+// threshold of voters has been reached based on g_iVotesNeeded. Allows overriding the round timer
+// block if configured in cvars.
+// -------------------------------------------------------------------------------------------------------------------------
 stock void AttemptScrambleVote(int client)
 {	
 	if (g_bArenaMode)
@@ -1919,6 +1977,12 @@ void SwapPreferences()
 	}	
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// Event_RoundStart
+// Description: Instead of processing scrambles during RoundEnd (which often interrupts map changes), 
+// logic processing is done here. Checks if a scramble was scheduled or triggered by a winstreak,
+// then applies the delay. Also handles resetting tracking data for the incoming round.
+// -------------------------------------------------------------------------------------------------------------------------
 public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 {
 	g_bTeamsLocked = false;
@@ -2023,6 +2087,12 @@ public void Event_RoundWin(Event event, const char[] name, bool dontBroadcast)
 	}
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// Event_PlayerDeath_Pre
+// Description: Core hook for balancing logic. This tallies frags for KD scramble modes, but more importantly,
+// checks if an imbalance currently exists on the server. If so, it waits a fraction of a second and fires 
+// a timer to potentially move this freshly-dead player to the smaller team.
+// -------------------------------------------------------------------------------------------------------------------------
 public Action Event_PlayerDeath_Pre(Event event, const char[] name, bool dontBroadcast) 
 {
 	if (g_bBlockDeath) 
@@ -2066,6 +2136,12 @@ stock int GetAbsValue(int value1, int value2)
 	return RoundFloat(FloatAbs(float(value1) - float(value2)));
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// IsNotTopPlayer
+// Description: Pulls all clients on a team, sorts them by score, and checks if the provided
+// client falls within the top 'X' spots defined by cvar_TopProtect. MVP players are spared from 
+// autobalance to prevent angering the players hard-carrying the team.
+// -------------------------------------------------------------------------------------------------------------------------
 bool IsNotTopPlayer(int client, int team) 
 {
 	int iSize, iHighestScore;
@@ -2119,6 +2195,12 @@ bool IsClientBuddy(int client)
 	return false;
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// IsValidTarget
+// Description: Checks if a player is legally allowed to be scrambled/balanced.
+// Players dueling, holding setup logic, building nests, or covered by specific admin flags
+// are skipped. If too many players are immune, the admin checks are forcibly bypassed.
+// -------------------------------------------------------------------------------------------------------------------------
 bool IsValidTarget(int client)
 {
 	if (cvar_ScrambleDuelImmunity.BoolValue)
@@ -2313,6 +2395,12 @@ public int SortScoreAsc(int[] x, int[] y, const int[][] array, Handle data)
 	return 0;
 }
 
+// -------------------------------------------------------------------------------------------------------------------------
+// CheckSpecChange
+// Description: Prevents players from ruining team balance. It simulates what the teams would look
+// like if the specified client left their team to join spectators. If the hypothetical gap
+// exceeds the cvar_BalanceLimit, the player is barred from going spectator.
+// -------------------------------------------------------------------------------------------------------------------------
 bool CheckSpecChange(int client)
 {
 	if (cvar_TeamSwapBlockImmunity.BoolValue)

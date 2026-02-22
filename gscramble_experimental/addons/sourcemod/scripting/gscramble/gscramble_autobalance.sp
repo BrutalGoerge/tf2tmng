@@ -577,7 +577,7 @@ bool SkipBalanceCheck()
 			iTotal = iImmune + iTargets;
 			fPercent = float(iImmune) / float(iTotal);
 			if (fPercent >= cvar_BalanceImmunityCheck.FloatValue)
-			{
+			{	
 				if (!g_bSilent && (GetTime() - g_iImmunityDisabledWarningTime) > 300)
 				{
 					PrintToChatAll("\x01\x04[SM]\x01 %t", "ImmunityDisabled", RoundFloat(fPercent));

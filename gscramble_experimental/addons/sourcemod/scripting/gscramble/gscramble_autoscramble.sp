@@ -19,12 +19,19 @@ stock bool ScrambleCheck()
 	}
 
 	bool bOkayToCheck = false;
+	// Always respect the minimum player count to prevent spam-scrambling empty servers
 	if (g_iVoters >= cvar_MinAutoPlayers.IntValue)
 	{
 		if (g_RoundState == bonusRound)
 		{
 			g_RoundState = roundNormal;
-			if (g_bNoSequentialScramble)
+			
+			// If set to force every round, bypass the sequential scramble block
+			if (cvar_AutoScrambleEveryRound.IntValue > 0)
+			{
+				bOkayToCheck = true;
+			}
+			else if (g_bNoSequentialScramble)
 			{
 				if (!g_bScrambledThisRound)
 				{
@@ -37,9 +44,24 @@ stock bool ScrambleCheck()
 			}
 		}
 	}
+	
 	if (bOkayToCheck)
 	{
-		if (WinStreakCheck(g_iLastRoundWinningTeam) || (!g_bScrambleOverride && g_bAutoScramble && AutoScrambleCheck(g_iLastRoundWinningTeam)))
+		bool forceEveryRound = false;
+		
+		// Ensure an admin didn't manually cancel the upcoming scramble via sm_cancel
+		// AND ensure that gs_autoscramble is actually set to 1!
+		if (!g_bScrambleOverride && g_bAutoScramble)
+		{
+			int everyRound = cvar_AutoScrambleEveryRound.IntValue;
+			if (everyRound == 1 || (everyRound == 2 && g_bWasFullRound))
+			{
+				forceEveryRound = true;
+			}
+		}
+		
+		// Trigger if forced by the new CVar, OR if the normal winstreak/imbalance checks fail
+		if (forceEveryRound || WinStreakCheck(g_iLastRoundWinningTeam) || (!g_bScrambleOverride && g_bAutoScramble && AutoScrambleCheck(g_iLastRoundWinningTeam)))
 		{
 			if (cvar_AutoscrambleVote.BoolValue)
 			{
