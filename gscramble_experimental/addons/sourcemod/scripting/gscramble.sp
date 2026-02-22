@@ -608,14 +608,7 @@ public Action Timer_load(Handle timer)
 	CreateTimer(1.0, Timer_GetTime);
 	
 	// Manually construct the total voter pool if loaded late
-	for (int i = 1; i <= MaxClients; i++)
-	{
-		if (IsClientInGame(i) && !IsFakeClient(i))
-		{
-			g_iVoters++;
-		}
-	}
-	g_iVotesNeeded = RoundToFloor(float(g_iVoters) * cvar_PublicNeeded.FloatValue);
+	updateVoters();
 	return Plugin_Handled;
 }
 
