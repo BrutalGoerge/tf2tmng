@@ -276,4 +276,25 @@
 		"#format"		"{1:i}"
 		"chi"			"由于服务器中超过 {1}% 的玩家拥有免疫权限，管理员/VIP 免疫检查已被暂时禁用。"
 	}
+	"VolunteerMenuTitle"
+	{
+		"chi"		"队伍不平衡！你愿意主动更换队伍吗？"
+	}
+	"VolunteerYes"
+	{
+		"chi"		"愿意，更换我的队伍"
+	}
+	"VolunteerNo"
+	{
+		"chi"		"不，谢谢"
+	}
+	"VolunteerSuccess"
+	{
+		"#format"	"{1:s}"
+		"chi"		"谢谢！你主动更换队伍，已被移动到 {1}。"
+	}
+	"VolunteerTooLate"
+	{
+		"chi"		"谢谢，但是队伍已经平衡了！"
+	}
 }

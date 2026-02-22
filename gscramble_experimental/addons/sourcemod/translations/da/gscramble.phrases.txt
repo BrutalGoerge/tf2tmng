@@ -276,4 +276,25 @@
 		"#format"	"{1:i}"
 		"da"		"Admin/Donator-tjek er nu deaktiveret, fordi over %{1} af serveren er sat til at være immun."
 	}
+	"VolunteerMenuTitle"
+	{
+		"da"		"Holdene er ubalancerede! Frivillig til at skifte?"
+	}
+	"VolunteerYes"
+	{
+		"da"		"Ja, skift mit hold"
+	}
+	"VolunteerNo"
+	{
+		"da"		"Nej tak"
+	}
+	"VolunteerSuccess"
+	{
+		"#format"	"{1:s}"
+		"da"		"Tak! Du meldte dig frivilligt og blev flyttet til {1}."
+	}
+	"VolunteerTooLate"
+	{
+		"da"		"Tak, men holdene er allerede blevet balanceret!"
+	}
 }

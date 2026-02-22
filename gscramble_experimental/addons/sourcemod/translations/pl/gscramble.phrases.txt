@@ -276,4 +276,25 @@
 		"#format"		"{1:i}"
 		"pl"			"Sprawdzanie immunitetu Adminów/Donatorów wyłączone, ponieważ ponad {1}% serwera posiada immunitet."
 	}
+	"VolunteerMenuTitle"
+	{
+		"pl"		"Drużyny są niezbalansowane! Chcesz dobrowolnie zmienić drużynę?"
+	}
+	"VolunteerYes"
+	{
+		"pl"		"Tak, zmień moją drużynę"
+	}
+	"VolunteerNo"
+	{
+		"pl"		"Nie, dziękuję"
+	}
+	"VolunteerSuccess"
+	{
+		"#format"	"{1:s}"
+		"pl"		"Dziękujemy! Dobrowolnie zmieniłeś drużynę i zostałeś przeniesiony do {1}."
+	}
+	"VolunteerTooLate"
+	{
+		"pl"		"Dziękujemy, ale drużyny zostały już zbalansowane!"
+	}
 }

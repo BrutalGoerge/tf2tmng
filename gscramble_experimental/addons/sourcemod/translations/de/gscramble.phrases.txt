@@ -276,4 +276,25 @@
 		"#format"		"{1:i}"
 		"de"			"Die Admin/VIP-Immunitätsprüfung wurde deaktiviert, da über {1}% des Servers als immun markiert sind."
 	}
+	"VolunteerMenuTitle"
+	{
+		"de"		"Die Teams sind unausgeglichen! Freiwillig wechseln?"
+	}
+	"VolunteerYes"
+	{
+		"de"		"Ja, wechsle mein Team"
+	}
+	"VolunteerNo"
+	{
+		"de"		"Nein, danke"
+	}
+	"VolunteerSuccess"
+	{
+		"#format"	"{1:s}"
+		"de"		"Danke! Du hast dich freiwillig gemeldet und wurdest zu {1} verschoben."
+	}
+	"VolunteerTooLate"
+	{
+		"de"		"Danke, aber die Teams wurden bereits ausgeglichen!"
+	}
 }

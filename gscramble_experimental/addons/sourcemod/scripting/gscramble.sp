@@ -29,7 +29,7 @@ Description:
 #define EVEN_SOUND		"vo/announcer_am_teamscramble01.mp3"
 
 // --- Global ConVars ---
-ConVar cvar_Version, cvar_Steamroll, cvar_Needed, cvar_Delay, cvar_MinPlayers, cvar_MinAutoPlayers,
+ConVar cvar_Version, cvar_Volunteer, cvar_VolunteerTime, cvar_Steamroll, cvar_Needed, cvar_Delay, cvar_MinPlayers, cvar_MinAutoPlayers,
 	cvar_FragRatio, cvar_AutoScramble, cvar_VoteEnable, cvar_WaitScramble, cvar_ForceTeam, cvar_ForceBalance,
 	cvar_SteamrollRatio, cvar_VoteMode, cvar_PublicNeeded, cvar_FullRoundOnly, cvar_AutoScrambleWinStreak,
 	cvar_SortMode, cvar_TeamSwapBlockImmunity, cvar_MenuVoteEnd, cvar_AutoscrambleVote, cvar_ScrambleImmuneMode,
@@ -263,6 +263,8 @@ public void OnPluginStart()
 	cvar_MenuIntegrate 		= CreateConVar("gs_admin_menu",			"1",  "Enable or disable the automatic integration into the admin menu", 0, true, 0.0, true, 1.0);
 	cvar_BlockJointeam 		= CreateConVar("gs_block_jointeam",		"0", "If enabled, will block the use of the jointeam and spectate commands and force mp_forceautoteam enabled if it is not enabled", 0, true, 0.0, true, 1.0);
 	cvar_OneScramblePerRound= CreateConVar("gs_onescrambleperround", "1", "If enabled, will only allow only allow one scramble per round", 0, true, 0.0, true, 1.0);
+	cvar_Volunteer 			= CreateConVar("gs_ab_volunteer", "0", "Ask players of the larger team to volunteer to swap over.", 0, true, 0.0, true, 1.0);
+	cvar_VolunteerTime 		= CreateConVar("gs_ab_volunteer_time", "15", "Time in seconds the volunteer menu stays on screen.", 0, true, 10.0, true, 90.0);
 	cvar_Version			= CreateConVar("gscramble_version", VERSION, "Gscramble version", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
 
 	RegCommands();
@@ -572,7 +574,7 @@ public Action Timer_load(Handle timer)
 {
 	g_RoundState = roundNormal;
 	CreateTimer(1.0, Timer_GetTime);
-	updateVoters()
+	updateVoters();
 	return Plugin_Handled;
 }
 

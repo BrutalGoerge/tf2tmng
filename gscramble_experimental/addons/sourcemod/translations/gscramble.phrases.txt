@@ -277,4 +277,25 @@
 		"#format"	"{1:i}"
 		"en"		"Admin/Donor checks are now disabled because over %{1} of the server is set to be immune."
 	}
+	"VolunteerMenuTitle"
+	{
+		"en"		"Teams are unbalanced! Volunteer to switch?"
+	}
+	"VolunteerYes"
+	{
+		"en"		"Yes, switch my team"
+	}
+	"VolunteerNo"
+	{
+		"en"		"No thanks"
+	}
+	"VolunteerSuccess"
+	{
+		"#format"	"{1:s}"
+		"en"		"Thank you! You volunteered and were moved to {1}."
+	}
+	"VolunteerTooLate"
+	{
+		"en"		"Thank you, but the teams have already been balanced!"
+	}
 }

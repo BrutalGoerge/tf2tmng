@@ -276,4 +276,25 @@
 		"#format"		"{1:i}"
 		"hu"			"Az Admin/VIP mentelmi jog ellenőrzése ki lett kapcsolva, mert a szerveren lévő játékosok több mint {1}%-a védett."
 	}
+	"VolunteerMenuTitle"
+	{
+		"hu"		"A csapatok kiegyenlítetlenek! Önkéntes csapatváltás?"
+	}
+	"VolunteerYes"
+	{
+		"hu"		"Igen, válts csapatot"
+	}
+	"VolunteerNo"
+	{
+		"hu"		"Nem, köszönöm"
+	}
+	"VolunteerSuccess"
+	{
+		"#format"	"{1:s}"
+		"hu"		"Köszönjük! Önkéntesként át lettél helyezve a(z) {1} csapatba."
+	}
+	"VolunteerTooLate"
+	{
+		"hu"		"Köszönjük, de a csapatok már ki lettek egyenlítve!"
+	}
 }

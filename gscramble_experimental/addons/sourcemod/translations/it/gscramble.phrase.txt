@@ -276,4 +276,25 @@
 		"#format"		"{1:i}"
 		"it"			"Il controllo dell'immunità per Admin/VIP è stato disabilitato perché oltre il {1}% del server risulta immune."
 	}
+	"VolunteerMenuTitle"
+	{
+		"it"		"Le squadre sono sbilanciate! Vuoi cambiare squadra volontariamente?"
+	}
+	"VolunteerYes"
+	{
+		"it"		"Sì, cambia la mia squadra"
+	}
+	"VolunteerNo"
+	{
+		"it"		"No, grazie"
+	}
+	"VolunteerSuccess"
+	{
+		"#format"	"{1:s}"
+		"it"		"Grazie! Ti sei offerto volontario e sei stato spostato nei {1}."
+	}
+	"VolunteerTooLate"
+	{
+		"it"		"Grazie, ma le squadre sono già state bilanciate!"
+	}
 }

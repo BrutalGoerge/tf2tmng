@@ -109,6 +109,16 @@ stock void StartForceTimer()
 	
 	float fDelay = cvar_MaxUnbalanceTime.FloatValue;
 	
+	// Guarantee enough time for the volunteer menu to finish (Menu Time + 5s buffer)
+	if (cvar_Volunteer.BoolValue)
+	{
+		float minDelay = cvar_VolunteerTime.FloatValue + 5.0;
+		if (fDelay < minDelay)
+		{
+			fDelay = minDelay;
+		}
+	}
+	
 	if (1.0 > fDelay)
 	{
 		return;
@@ -206,6 +216,12 @@ public Action timer_BalanceFlag(Handle timer)
 	
 	if (TeamsUnbalanced())
 	{
+		// Launch the volunteer phase if enabled
+		if (cvar_Volunteer.BoolValue)
+		{
+			PromptVolunteers();
+		}
+		
 		StartForceTimer();
 		g_aTeams[bImbalanced] = true;
 	}
@@ -624,4 +640,110 @@ bool IsValidTeam(int client)
 	}
 	
 	return false;
+}
+
+// --- Volunteer System ---
+
+void PromptVolunteers()
+{
+	int team = GetLargerTeam();
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		// Only ask valid balance targets so we don't annoy immune players or admins
+		if (IsClientInGame(i) && GetClientTeam(i) == team && IsClientValidBalanceTarget(i, false) && !IsFakeClient(i))
+		{
+			ShowVolunteerMenu(i);
+		}
+	}
+}
+
+void ShowVolunteerMenu(int client)
+{
+	Menu menu = new Menu(Handle_VolunteerMenu);
+	menu.SetTitle("%T", "VolunteerMenuTitle", client);
+	
+	char yes[64], no[64];
+	Format(yes, sizeof(yes), "%T", "VolunteerYes", client);
+	Format(no, sizeof(no), "%T", "VolunteerNo", client);
+	
+	menu.AddItem("yes", yes);
+	menu.AddItem("no", no);
+	
+	// Uses the new ConVar to determine exactly how long the menu stays open
+	menu.Display(client, cvar_VolunteerTime.IntValue); 
+}
+
+public int Handle_VolunteerMenu(Menu menu, MenuAction action, int client, int param2)
+{
+	if (action == MenuAction_Select)
+	{
+		char info[32];
+		menu.GetItem(param2, info, sizeof(info));
+		
+		if (StrEqual(info, "yes"))
+		{
+			// Verify they are still on the larger team and an imbalance still exists
+			if (TeamsUnbalanced(false) && GetClientTeam(client) == GetLargerTeam())
+			{
+				PerformVolunteerSwap(client);
+			}
+			else
+			{
+				PrintToChat(client, "\x01\x04[SM]\x01 %t", "VolunteerTooLate");
+			}
+		}
+	}
+	else if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+	return 0;
+}
+
+void PerformVolunteerSwap(int client)
+{
+	int newTeam = GetClientTeam(client) == TEAM_RED ? TEAM_BLUE : TEAM_RED;
+	char sTeam[32], sName[MAX_NAME_LENGTH + 1];
+	
+	GetClientName(client, sName, sizeof(sName));
+	newTeam == TEAM_RED ? (sTeam = "RED") : (sTeam = "BLU");
+	
+	g_bBlockDeath = true;
+	ChangeClientTeam(client, newTeam);
+	g_bBlockDeath = false;
+	
+	g_aPlayers[client][iBalanceTime] = GetTime() + (cvar_BalanceTime.IntValue * 60);
+	SetupTeamSwapBlock(client);
+	
+	if (IsPlayerAlive(client))
+	{
+		CreateTimer(0.5, Timer_BalanceSpawn, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
+	}
+	
+	Event event = CreateEvent("teamplay_teambalanced_player");
+	if (event != null)
+	{
+		event.SetInt("player", client);
+		event.SetInt("team", newTeam);
+		event.Fire();
+	}
+	
+	LogAction(client, -1, "\"%L\" volunteered to balance to %s.", client, sTeam);
+	PrintToChat(client, "\x01\x04[SM]\x01 %t", "VolunteerSuccess", sTeam);
+	
+	if (!g_bSilent)
+	{
+		PrintToChatAll("\x01\x04[SM]\x01 %t", "TeamChangedAll", sName, sTeam);
+	}
+	
+	// Instantly check if the imbalance is fixed to cancel the impending force-balance timer
+	if (!TeamsUnbalanced(false))
+	{
+		g_aTeams[bImbalanced] = false;
+		if (g_hForceBalanceTimer != null)
+		{
+			KillTimer(g_hForceBalanceTimer);
+			g_hForceBalanceTimer = null;
+		}
+	}
 }
