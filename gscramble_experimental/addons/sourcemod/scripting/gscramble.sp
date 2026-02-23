@@ -22,7 +22,7 @@ Description:
 #include <adminmenu>
 #define REQUIRE_PLUGIN
 
-#define VERSION "3.0.33-Modern"
+#define VERSION "4.0.0"
 #define TEAM_RED 2
 #define TEAM_BLUE 3
 #define SCRAMBLE_SOUND  "vo/announcer_am_teamscramble03.mp3"
