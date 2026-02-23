@@ -286,7 +286,9 @@ public void OnPluginStart()
 	}
 	
 	AutoExecConfig(true, "plugin.gscramble");
-	
+	LoadTranslations("common.phrases");
+	LoadTranslations("gscramble.phrases.txt");
+	CheckTranslation();
 	CheckExtensions();	
 		
 	g_iVoters = GetClientCount(false);
