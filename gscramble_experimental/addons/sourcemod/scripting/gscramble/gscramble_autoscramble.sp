@@ -173,12 +173,21 @@ public Action timer_AfterScramble(Handle timer, any spawn)
 {
 	int iEnt = -1;
 	
+	// Clean up map/dropped ammo packs
 	while ((iEnt = FindEntityByClassname(iEnt, "tf_ammo_pack")) != -1)
 	{
 		AcceptEntityInput(iEnt, "Kill");
 	}	
 	
+	// Clean up modern fallen player weapons
+	iEnt = -1;
+	while ((iEnt = FindEntityByClassname(iEnt, "tf_dropped_weapon")) != -1)
+	{
+		AcceptEntityInput(iEnt, "Kill");
+	}
+	
 	TF2_RemoveRagdolls();
+	
 	if (spawn)
 	{
 		for (int i = 1; i <= MaxClients; i++)
