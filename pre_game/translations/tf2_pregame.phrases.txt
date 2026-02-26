@@ -1,0 +1,266 @@
+"Phrases"
+{
+	"Pregame_Announce"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"FFA Started! Weapons: {1} | Effect: {2} | Gag: {3}"
+		"fr"		"FFA Démarré ! Armes : {1} | Effet : {2} | Gag : {3}"
+		"es"		"¡Todos contra todos iniciado! Armas: {1} | Efecto: {2} | Broma: {3}"
+		"de"		"Jeder-gegen-Jeden gestartet! Waffen: {1} | Effekt: {2} | Gag: {3}"
+		"ru"		"FFA началось! Оружие: {1} | Эффект: {2} | Прикол: {3}"
+		"pt"		"Todos contra Todos começou! Armas: {1} | Efeito: {2} | Piada: {3}"
+		"pl"		"Start FFA! Broń: {1} | Efekt: {2} | Żart: {3}"
+	}
+	
+	// ========================================
+	// Melee Settings
+	// ========================================
+	"Melee_Only"
+	{
+		"en"		"Melee Only"
+		"fr"		"Mêlée Uniquement"
+		"es"		"Solo cuerpo a cuerpo"
+		"de"		"Nur Nahkampf"
+		"ru"		"Только ближний бой"
+		"pt"		"Apenas Corpo a Corpo"
+		"pl"		"Tylko wręcz"
+	}
+	"All_Weapons"
+	{
+		"en"		"All Weapons"
+		"fr"		"Toutes les Armes"
+		"es"		"Todas las armas"
+		"de"		"Alle Waffen"
+		"ru"		"Всё оружие"
+		"pt"		"Todas as Armas"
+		"pl"		"Wszystkie bronie"
+	}
+
+	// ========================================
+	// Damage / Physical Effects
+	// ========================================
+	"Effect_None"
+	{
+		"en"		"None"
+		"fr"		"Aucun"
+		"es"		"Ninguno"
+		"de"		"Keiner"
+		"ru"		"Нет"
+		"pt"		"Nenhum"
+		"pl"		"Brak"
+	}
+	"Effect_MiniCrit"
+	{
+		"en"		"Mini-Crits"
+		"fr"		"Mini-Crits"
+		"es"		"Minicríticos"
+		"de"		"Mini-Kritisch"
+		"ru"		"Мини-криты"
+		"pt"		"Mini-Crits"
+		"pl"		"Mini-Kryty"
+	}
+	"Effect_FullCrit"
+	{
+		"en"		"Full Crits"
+		"fr"		"Crits Complets"
+		"es"		"Críticos completos"
+		"de"		"Volle Kritz"
+		"ru"		"Полные криты"
+		"pt"		"Crits Totais"
+		"pl"		"Pełne Kryty"
+	}
+	"Effect_Speed"
+	{
+		"en"		"Speed Boost"
+		"fr"		"Boost de Vitesse"
+		"es"		"Aumento de velocidad"
+		"de"		"Geschwindigkeitsschub"
+		"ru"		"Ускорение"
+		"pt"		"Aumento de Velocidade"
+		"pl"		"Wzrost Prędkości"
+	}
+	"Effect_MegaHeal"
+	{
+		"en"		"MegaHeal Juggernaut"
+		"fr"		"Mastodonte MégaSoin"
+		"es"		"Coloso Megacuración"
+		"de"		"MegaHeilung-Juggernaut"
+		"ru"		"Мега-Лечение"
+		"pt"		"Gigante MegaCura"
+		"pl"		"Mega Leczenie"
+	}
+	"Effect_Defense"
+	{
+		"en"		"Damage Resistance"
+		"fr"		"Résistance aux Dégâts"
+		"es"		"Resistencia al daño"
+		"de"		"Schadensresistenz"
+		"ru"		"Сопротивление урону"
+		"pt"		"Resistência a Dano"
+		"pl"		"Odporność na Obrażenia"
+	}
+	"Effect_Marked"
+	{
+		"en"		"Marked for Death"
+		"fr"		"Marqué pour la Mort"
+		"es"		"Marcado para morir"
+		"de"		"Zum Tode markiert"
+		"ru"		"Метка смерти"
+		"pt"		"Marcado para a Morte"
+		"pl"		"Naznaczony Śmiercią"
+	}
+
+	// ========================================
+	// Visual Gags & Particles
+	// ========================================
+	"Gag_Chaos"
+	{
+		"en"		"Total Chaos"
+		"fr"		"Chaos Total"
+		"es"		"Caos total"
+		"de"		"Totales Chaos"
+		"ru"		"Полный хаос"
+		"pt"		"Caos Total"
+		"pl"		"Całkowity Chaos"
+	}
+	"Gag_HealRadius"
+	{
+		"en"		"Healing Ring"
+		"fr"		"Anneau de Soin"
+		"es"		"Anillo curativo"
+		"de"		"Heilungsring"
+		"ru"		"Кольцо лечения"
+		"pt"		"Anel de Cura"
+		"pl"		"Pierścień Leczący"
+	}
+	"Gag_TeleportGlow"
+	{
+		"en"		"Teleporter Trails"
+		"fr"		"Traînées de Téléporteur"
+		"es"		"Estelas de teletransportador"
+		"de"		"Teleporter-Spuren"
+		"ru"		"Следы телепорта"
+		"pt"		"Rastos de Teletransporte"
+		"pl"		"Ślady Teleportera"
+	}
+	"Gag_Burning"
+	{
+		"en"		"On Fire"
+		"fr"		"En Feu"
+		"es"		"En llamas"
+		"de"		"Brennend"
+		"ru"		"В огне"
+		"pt"		"Em Chamas"
+		"pl"		"W Ogniu"
+	}
+	"Gag_Disguising"
+	{
+		"en"		"Spy Smoke"
+		"fr"		"Fumée d'Espion"
+		"es"		"Humo de Spy"
+		"de"		"Spy-Rauch"
+		"ru"		"Дым шпиона"
+		"pt"		"Fumo de Spy"
+		"pl"		"Dym Szpiega"
+	}
+	"Gag_Hearts"
+	{
+		"en"		"Circling Hearts"
+		"fr"		"Cœurs Tournoyants"
+		"es"		"Corazones en órbita"
+		"de"		"Kreisende Herzen"
+		"ru"		"Кружащиеся сердца"
+		"pt"		"Corações Circulantes"
+		"pl"		"Krążące Serca"
+	}
+	"Gag_BalloonHead"
+	{
+		"en"		"Balloon Heads"
+		"fr"		"Têtes de Ballon"
+		"es"		"Cabezas de globo"
+		"de"		"Ballonköpfe"
+		"ru"		"Головы-шарики"
+		"pt"		"Cabeças de Balão"
+		"pl"		"Balonowe Głowy"
+	}
+	"Gag_BumperCar"
+	{
+		"en"		"Bumper Cars"
+		"fr"		"Autos-Tamponneuses"
+		"es"		"Coches de choque"
+		"de"		"Autoscooter"
+		"ru"		"Машинки"
+		"pt"		"Carrinhos de Choque"
+		"pl"		"Samochodziki"
+	}
+	"Gag_Fireworks"
+	{
+		"en"		"Fireworks"
+		"fr"		"Feux d'Artifice"
+		"es"		"Fuegos artificiales"
+		"de"		"Feuerwerk"
+		"ru"		"Фейерверки"
+		"pt"		"Fogos de Artifício"
+		"pl"		"Fajerwerki"
+	}
+	"Gag_Flies"
+	{
+		"en"		"Massed Flies"
+		"fr"		"Nuée de Mouches"
+		"es"		"Enjambre de moscas"
+		"de"		"Fliegenschwarm"
+		"ru"		"Рой мух"
+		"pt"		"Enxame de Moscas"
+		"pl"		"Rój Much"
+	}
+	"Gag_Ghosts"
+	{
+		"en"		"Haunted Ghosts"
+		"fr"		"Fantômes Hantés"
+		"es"		"Fantasmas"
+		"de"		"Spukende Geister"
+		"ru"		"Призраки"
+		"pt"		"Fantasmas"
+		"pl"		"Nawiedzone Duchy"
+	}
+	"Gag_Confetti"
+	{
+		"en"		"Green Confetti"
+		"fr"		"Confettis Verts"
+		"es"		"Confeti verde"
+		"de"		"Grünes Konfetti"
+		"ru"		"Зеленое конфетти"
+		"pt"		"Confetes Verdes"
+		"pl"		"Zielone Konfetti"
+	}
+	"Gag_Planets"
+	{
+		"en"		"Orbiting Planets"
+		"fr"		"Planètes en Orbite"
+		"es"		"Planetas en órbita"
+		"de"		"Kreisende Planeten"
+		"ru"		"Кружащиеся планеты"
+		"pt"		"Planetas em Órbita"
+		"pl"		"Krążące Planety"
+	}
+	"Gag_Sunbeams"
+	{
+		"en"		"Sunbeams"
+		"fr"		"Rayons de Soleil"
+		"es"		"Rayos de sol"
+		"de"		"Sonnenstrahlen"
+		"ru"		"Солнечные лучи"
+		"pt"		"Raios de Sol"
+		"pl"		"Promienie Słońca"
+	}
+	"Gag_SizeShifter"
+	{
+		"en"		"Size Shifter"
+		"fr"		"Changeur de Taille"
+		"es"		"Cambio de tamaño"
+		"de"		"Größenwandler"
+		"ru"		"Смена размера"
+		"pt"		"Mudança de Tamanho"
+		"pl"		"Zmieniacz Rozmiaru"
+	}
+}

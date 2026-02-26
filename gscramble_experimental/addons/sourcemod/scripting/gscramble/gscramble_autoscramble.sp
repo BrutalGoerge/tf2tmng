@@ -405,8 +405,11 @@ public Action timer_ScrambleDelay(Handle timer, any data)
 void FireScrambleEvent()
 {
 	Event event = CreateEvent("teamplay_alert");
-	event.SetInt("alert_type", 0);
-	event.Fire();
+	if (event != null)
+	{
+		event.SetInt("alert_type", 0);
+		event.Fire();
+	}
 }
 	
 stock void PerformTopSwap()
