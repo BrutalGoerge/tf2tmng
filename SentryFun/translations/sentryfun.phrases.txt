@@ -1,0 +1,12 @@
+"Phrases"
+{
+	"Hero_Global_Message"
+	{
+		"#format"	"{1:s}"
+		"en"		"{1} has been turned into a HERO with 2000 HP and crits!"
+	}
+	"Hero_Self_Message"
+	{
+		"en"		"You are the HERO! You have 2000 HP and full crits. Wipe them out!"
+	}
+}
