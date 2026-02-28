@@ -20,15 +20,17 @@ Description:
 #include <tf2_stocks>
 #include <clientprefs>
 
-#define PL_VERSION "2.0.0"
+#define PL_VERSION "2.0.1_testing"
 #define MAX_PARTICLES 3
 
 // ========================================================================
 // GLOBAL VARIABLES
 // ========================================================================
 bool g_bPreGame;
+bool g_bPregameEnding;
 bool g_bBlockLog;
-int g_iTimeLeft;
+
+int g_iLastAnnouncedSecond;
 
 int g_iFrags[MAXPLAYERS + 1];
 int g_iMenuSettings[MAXPLAYERS + 1];
@@ -97,7 +99,7 @@ public Plugin myinfo =
 	author = "GOERGE",
 	description = "Funtimes for pregame round",
 	version = PL_VERSION,
-	url = "https://github.com/BrutalGoerge/tf2tmng"
+	url = "http://tf2tmng.googlecode.com/"
 };
 
 // ========================================================================
@@ -197,11 +199,16 @@ public void OnConfigsExecuted()
 	PrecacheSound(")weapons/bumper_car_accelerate.wav", true);
 	PrecacheSound("weapons/bumper_car_spawn.wav", true);
 	PrecacheSound(")weapons/bumper_car_spawn.wav", true);
-	// Boost Sounds
 	PrecacheSound("weapons/bumper_car_speed_boost_start.wav", true);
 	PrecacheSound(")weapons/bumper_car_speed_boost_start.wav", true);
 	PrecacheSound("weapons/bumper_car_speed_boost_stop.wav", true);
 	PrecacheSound(")weapons/bumper_car_speed_boost_stop.wav", true);
+	
+	PrecacheSound("vo/announcer_begins_5sec.mp3", true);
+	PrecacheSound("vo/announcer_begins_4sec.mp3", true);
+	PrecacheSound("vo/announcer_begins_3sec.mp3", true);
+	PrecacheSound("vo/announcer_begins_2sec.mp3", true);
+	PrecacheSound("vo/announcer_begins_1sec.mp3", true);
 }
 
 public void OnMapStart()
@@ -332,10 +339,10 @@ public void Event_PlayerDeath(Event event, const char[] name, bool dontBroadcast
 			g_iFrags[iAttacker]++;
 			if (!IsFakeClient(iAttacker))
 			{
-				PrintHintText(iAttacker, "Kills: %i", g_iFrags[iAttacker]);
+				PrintHintText(iAttacker, "TeamKills: %i", g_iFrags[iAttacker]);
 			}
 		}
-		CreateTimer(0.3, Timer_Spawn, iUserId);
+		CreateTimer(GetRandomFloat(0.1, 0.5), Timer_Spawn, iUserId);
 	}
 }
 
@@ -419,6 +426,8 @@ public Action Timer_Cond(Handle timer, any userid)
 
 public Action Timer_SetCond(Handle timer, any userid)
 {
+	if (g_bPregameEnding) return Plugin_Handled;
+
 	int client = GetClientOfUserId(userid);
 	if (g_bPreGame && client && IsPlayerAlive(client))
 	{
@@ -463,7 +472,7 @@ public Action Timer_SetCond(Handle timer, any userid)
 		switch (g_Effect)
 		{
 			case effectMiniCrit: 		TF2_AddCondition(client, TFCond_Buffed, -1.0);
-			case effectFullCrit: 		TF2_AddCondition(client, TFCond_Kritzkrieged, -1.0);
+			case effectFullCrit: 		TF2_AddCondition(client, TFCond_CritOnFlagCapture, -1.0);
 			case effectSpeed: 			TF2_AddCondition(client, TFCond_SpeedBuffAlly, -1.0);
 			case effectMegaHeal: 		TF2_AddCondition(client, TFCond_MegaHeal, -1.0);
 			case effectDefense: 		TF2_AddCondition(client, TFCond_DefenseBuffed, -1.0);
@@ -485,13 +494,10 @@ stock void AttachParticle(int client, const char[] effectName, const char[] atta
 		GetClientAbsOrigin(client, pos);
 		TeleportEntity(particle, pos, NULL_VECTOR, NULL_VECTOR);
 		
+		DispatchKeyValue(particle, "targetname", "tf2_pregame_particle");
 		DispatchKeyValue(particle, "effect_name", effectName);
 		DispatchSpawn(particle);
 		ActivateEntity(particle);
-		
-		char targetName[64];
-		Format(targetName, sizeof(targetName), "pregame_target_%d_%d", client, slot);
-		DispatchKeyValue(client, "targetname", targetName);
 		
 		SetVariantString("!activator");
 		AcceptEntityInput(particle, "SetParent", client, particle, 0);
@@ -520,12 +526,41 @@ stock void KillParticles(int client)
 				float hidePos[3] = { 0.0, 0.0, -10000.0 };
 				TeleportEntity(entity, hidePos, NULL_VECTOR, NULL_VECTOR);
 				
-				AcceptEntityInput(entity, "Stop");
-				SetVariantString("OnUser1 !self:Kill::0.1:1");
-				AcceptEntityInput(entity, "AddOutput");
-				AcceptEntityInput(entity, "FireUser1");
+				CreateTimer(0.1, Timer_DelayedParticleKill, EntIndexToEntRef(entity), TIMER_FLAG_NO_MAPCHANGE);
 			}
 			g_iParticles[client][i] = INVALID_ENT_REFERENCE;
+		}
+	}
+}
+
+public Action Timer_DelayedParticleKill(Handle timer, any ref)
+{
+	int entity = EntRefToEntIndex(ref);
+	if (entity > MaxClients && IsValidEntity(entity))
+	{
+		AcceptEntityInput(entity, "Stop");
+		AcceptEntityInput(entity, "Kill");
+	}
+	return Plugin_Handled;
+}
+
+stock void PurgeGlobalParticles()
+{
+	int ent = -1;
+	while ((ent = FindEntityByClassname(ent, "info_particle_system")) != -1)
+	{
+		if (IsValidEntity(ent))
+		{
+			char targetName[64];
+			GetEntPropString(ent, Prop_Data, "m_iName", targetName, sizeof(targetName));
+			if (StrEqual(targetName, "tf2_pregame_particle") || StrEqual(targetName, "tf2_pregame_firework"))
+			{
+				AcceptEntityInput(ent, "ClearParent");
+				float hidePos[3] = { 0.0, 0.0, -10000.0 };
+				TeleportEntity(ent, hidePos, NULL_VECTOR, NULL_VECTOR);
+				
+				CreateTimer(0.1, Timer_DelayedParticleKill, EntIndexToEntRef(ent), TIMER_FLAG_NO_MAPCHANGE);
+			}
 		}
 	}
 }
@@ -574,7 +609,7 @@ stock void SpawnFirework(int client)
 		
 		Format(tName, sizeof(tName), "target%i", client);
 		DispatchKeyValue(client, "targetname", tName);		
-		DispatchKeyValue(particle, "targetname", "tf2particle");
+		DispatchKeyValue(particle, "targetname", "tf2_pregame_firework");
 		DispatchKeyValue(particle, "parentname", tName);
 		DispatchKeyValue(particle, "effect_name", "mini_fireworks");
 		DispatchSpawn(particle);
@@ -676,7 +711,7 @@ stock void RemoveWeapons(int client)
 }
 
 // ========================================================================
-// PREGAME CONTROLLERS
+// PREGAME CONTROLLERS & SCHEDULERS
 // ========================================================================
 public void TF2_OnWaitingForPlayersStart()
 {
@@ -691,6 +726,7 @@ public void TF2_OnWaitingForPlayersEnd()
 stock void StartPreGame()
 {
 	g_bPreGame = true;
+	g_bPregameEnding = false;
 	
 	ConVar hFriendlyFire = FindConVar("mp_friendlyfire");
 	if (hFriendlyFire != null) hFriendlyFire.BoolValue = true;
@@ -705,17 +741,49 @@ stock void StartPreGame()
 	
 	RespawnAll();
 	
-	g_iTimeLeft = g_hVarTime.IntValue;
-	CreateTimer(1.0, Timer_CountDown, _, TIMER_REPEAT);
+	g_iLastAnnouncedSecond = -1;
+	
+	// Start Master Sync heartbeat
+	CreateTimer(0.1, Timer_MasterSync, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	
 	SetGlobalEffect();
 	SetGlobalVisualGag();
 	SetGlobalMelee();
 	
 	CreateTimer(2.0, Timer_AnnounceMode, _, TIMER_FLAG_NO_MAPCHANGE);
-	
-	// Delayed execution to bypass map logic auto-locking setup gates
 	CreateTimer(1.5, Timer_DelayDoors, _, TIMER_FLAG_NO_MAPCHANGE);
+}
+
+public Action Timer_MasterSync(Handle timer)
+{
+	if (!g_bPreGame) return Plugin_Stop;
+	
+	// Directly read the exact UI clock! No more guessing!
+	float flRemaining = GetPregameTimeLeft();
+	
+	// Pre-Emptive Strike: Fire EXACTLY when the UI clock hits 1.0 second
+	if (flRemaining <= 1.0 && !g_bPregameEnding)
+	{
+		g_bPregameEnding = true;
+		for (int i = 1; i <= MaxClients; i++)
+		{
+			KillParticles(i);
+			KillFireworksTimer(i);
+		}
+		PurgeGlobalParticles();
+	}
+	
+	// Audio Announcer Countdown
+	int iSeconds = RoundToFloor(flRemaining);
+	if (iSeconds <= 5 && iSeconds >= 1 && iSeconds != g_iLastAnnouncedSecond)
+	{
+		g_iLastAnnouncedSecond = iSeconds;
+		char sSound[64];
+		Format(sSound, sizeof(sSound), "vo/announcer_begins_%dsec.mp3", iSeconds);
+		EmitSoundToAll(sSound);
+	}
+	
+	return Plugin_Continue;
 }
 
 public Action Timer_DelayDoors(Handle timer)
@@ -757,14 +825,14 @@ public Action Timer_DelayDoors(Handle timer)
 	return Plugin_Handled;
 }
 
-
 stock void StopPreGame()
 {
 	if (g_bPreGame)
 	{
 		g_bPreGame = false;
+		g_bPregameEnding = false;
 		
-		CreateTimer(1.0, Timer_RemoveEffects);
+		CreateTimer(0.1, Timer_RemoveEffects);
 		
 		ConVar hFriendlyFire = FindConVar("mp_friendlyfire");
 		if (hFriendlyFire != null) hFriendlyFire.BoolValue = false;
@@ -780,13 +848,6 @@ stock void StopPreGame()
 			CreateTimer(0.5, Timer_Winners);
 		}
 	}
-}
-
-public Action Timer_CountDown(Handle timer)
-{
-	g_iTimeLeft--;
-	if (g_iTimeLeft == 0) return Plugin_Stop;
-	else return Plugin_Continue;
 }
 
 stock void RespawnAll()
@@ -816,7 +877,7 @@ public Action Timer_RemoveEffects(Handle timer)
 			TF2_RemoveCondition(i, TFCond_BalloonHead);
 			TF2_RemoveCondition(i, TFCond_HalloweenKart);
 			TF2_RemoveCondition(i, TFCond_Buffed);
-			TF2_RemoveCondition(i, TFCond_Kritzkrieged);
+			TF2_RemoveCondition(i, TFCond_CritOnFlagCapture);
 			TF2_RemoveCondition(i, TFCond_SpeedBuffAlly);
 			TF2_RemoveCondition(i, TFCond_MegaHeal);
 			TF2_RemoveCondition(i, TFCond_DefenseBuffed);
@@ -825,6 +886,8 @@ public Action Timer_RemoveEffects(Handle timer)
 			TF2_RemoveCondition(i, TFCond_MarkedForDeath);
 		}
 	}
+	
+	PurgeGlobalParticles();
 	return Plugin_Handled;
 }
 
@@ -957,7 +1020,6 @@ void ModifyDoors(const char[] lockState, const char[] openOrClose)
 		AcceptEntityInput(ent, openOrClose);
 	}
 	
-	// Add func_brush check to strip invisible walls blocking the visual doors on Payload maps
 	ent = -1;
 	while((ent = FindEntityByClassname(ent, "func_brush")) != -1) 
 	{
@@ -1024,7 +1086,7 @@ stock void UnlockAllDoors()
 		GetEntPropString(ent, Prop_Data, "m_iName", tName, sizeof(tName));
 		if ((StrContains(tName, "door", false) != -1) || (StrContains(tName, "gate", false) != -1))
 		{
-			AcceptEntityInput(ent, "Enable"); // Ensure collision blocks return for actual gameplay
+			AcceptEntityInput(ent, "Enable");
 		}
 	}
 	
@@ -1153,4 +1215,51 @@ stock void AddNotify(const char[] setting)
 			hVar.Flags = iFlags | FCVAR_NOTIFY;
 		}
 	}
+}
+
+// ========================================================================
+// TIME HELPERS
+// ========================================================================
+float GetPregameTimeLeft()
+{
+	int ent = -1;
+	bool bFound = false;
+	float flEndTime = 0.0;
+	
+	// First, try to find TF2's dedicated pregame timer by its hardcoded internal name
+	while ((ent = FindEntityByClassname(ent, "team_round_timer")) != -1)
+	{
+		char sName[64];
+		GetEntPropString(ent, Prop_Data, "m_iName", sName, sizeof(sName));
+		if (StrEqual(sName, "zz_teamplay_waiting_timer"))
+		{
+			flEndTime = GetEntPropFloat(ent, Prop_Send, "m_flTimerEndTime");
+			bFound = true;
+			break;
+		}
+	}
+	
+	// Failsafe: If the map renamed it, just grab whatever timer is currently showing on the HUD
+	if (!bFound)
+	{
+		ent = -1;
+		while ((ent = FindEntityByClassname(ent, "team_round_timer")) != -1)
+		{
+			if (GetEntProp(ent, Prop_Send, "m_bShowInHUD") == 1)
+			{
+				flEndTime = GetEntPropFloat(ent, Prop_Send, "m_flTimerEndTime");
+				bFound = true;
+				break;
+			}
+		}
+	}
+	
+	// If a valid timer was found, calculate exactly how many seconds are left right now
+	if (bFound)
+	{
+		return flEndTime - GetGameTime();
+	}
+	
+	// If no timer exists yet, return a safely large number so we don't trigger the end sequence early
+	return 999.0;
 }

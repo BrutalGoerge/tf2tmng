@@ -446,6 +446,10 @@ public void hook_Death(Event event, const char[] name, bool dontBroadcast)
 	if (!g_bEnabled || g_state != normalRound)
 		return;
 		
+	// Block streaks from triggering or logging during the "Waiting for Players" phase
+	if (GameRules_GetProp("m_bInWaitingForPlayers"))
+		return;
+		
 	int killer = GetClientOfUserId(event.GetInt("attacker"));
 	int victim = GetClientOfUserId(event.GetInt("userid"));
 	
